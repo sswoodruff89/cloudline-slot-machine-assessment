@@ -97,7 +97,15 @@ const MainSlotMachine = () => {
   // set them in our local state above, newColors.
 
   // 3. If all the colors are the same, we add to our tally wins.
-  function spin() {}
+  function spin() {
+    let slots = [];
+    while (slots.length < 3) {
+      let num = Math.floor(Math.random() * baseColors.length);
+      slots.push(baseColors[num])
+    }
+    setColors(slots);
+    dispatch(addToTries());
+  }
 
   // TASK
   // In this lifecycle function, of the tally wins reaches 5,
