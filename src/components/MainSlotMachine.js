@@ -112,7 +112,12 @@ const MainSlotMachine = () => {
   // have a window.confirm message come up telling the user to 'Stop Gambling!'.
   // on 5 wins the spin button should also become disabled.
   // On selecting 'ok', the tally wins and tries are reset.
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (tally.wins === 5) {
+      let confirm = window.confirm("Stop Gambling!");
+      if (confirm) dispatch(resetTally());
+    }
+  }, [tally.wins]);
 
   // TASK
   // Within the Slots div, create 3 slots. (Create a styled component called 'Slot'
