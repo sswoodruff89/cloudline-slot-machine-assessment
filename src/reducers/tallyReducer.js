@@ -16,7 +16,8 @@ export const listTally = (state = tallyState, action) => {
     // Reset the state values back to 0 with type RESET_TALLY
     case RESET_TALLY:
       return {...state, wins: 0, tries: 0 }
-
+    // NOTE: Originally returned {...state, ...tallyState}, but tries stayed at 1 after reset
+    // Tried wins: 0, tries: 0, and this worked
     default:
       return state;
   }

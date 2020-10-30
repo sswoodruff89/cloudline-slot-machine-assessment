@@ -17,6 +17,7 @@ const Parent = styled.div`
     flex-direction: row;
   }
 `;
+// NOTE: Used media queries for touch up on responsive layout, stacking components in mobile
 
 const SubDiv = styled.div`
   height: 48%;
@@ -119,6 +120,9 @@ const MainSlotMachine = () => {
     let win = slots.every(slot => slot === slots[0]);
     setColors(slots);
     if (win) dispatch(addToWins());
+    // NOTE: addToTries is dispatched first
+    // While loop selects random indices, then assigns boolean to 'win' if all are the same
+    // addToWins dispatches if win is true
   }
 
   // TASK--COMPLETE
@@ -134,6 +138,9 @@ const MainSlotMachine = () => {
         setColors(["grey", "grey", "grey"])
       };
     }
+    // NOTE: Used tally.wins for dependency, and assign window.confirm to variable to use in conditional
+    // resetTally is dispatched and colors are also reset
+
   }, [tally.wins]);
 
   // TASK--COMPLETE
