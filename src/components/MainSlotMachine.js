@@ -10,13 +10,18 @@ const Parent = styled.div`
   width: 100%;
   background: #dcdcf3;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  @media (min-width: 800px) {
+    flex-direction: row;
+  }
 `;
 
 const SubDiv = styled.div`
-  height: 80%;
-  width: 40%;
+  height: 48%;
+  width: 90%;
+  max-width: 500px;
   margin: 20px;
   padding: 30px;
   display: flex;
@@ -24,6 +29,11 @@ const SubDiv = styled.div`
   align-items: center;
   flex-direction: column;
   background: #e09e9e;
+  @media (min-width: 800px) {
+    width: 43%;
+    height: 80%;
+    max-width: none;
+  }
 `;
 
 const Header = styled.div`
@@ -39,17 +49,19 @@ const Header = styled.div`
 
 const Slots = styled.div`
   display: flex;
+  width: 100%;
   justify-content: space-between;
 `;
 
 const Slot = styled.div`
   height: 250px;
-  width: 180px;
+  width: 33%;
   border: 2px solid black;
 `;
 
 const Spin = styled.button`
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -87,7 +99,7 @@ const MainSlotMachine = () => {
   // this if you want.
   const [newColors, setColors] = useState(["grey", "grey", "grey"]);
 
-  // TASK
+  // TASK--COMPLETE
   // Here is the main spin function which should be called
   // every time we press the Spin button. This function should:
 
@@ -98,16 +110,18 @@ const MainSlotMachine = () => {
 
   // 3. If all the colors are the same, we add to our tally wins.
   function spin() {
+    dispatch(addToTries());
     let slots = [];
     while (slots.length < 3) {
       let num = Math.floor(Math.random() * baseColors.length);
       slots.push(baseColors[num])
     }
+    let win = slots.every(slot => slot === slots[0]);
     setColors(slots);
-    dispatch(addToTries());
+    if (win) dispatch(addToWins());
   }
 
-  // TASK
+  // TASK--COMPLETE
   // In this lifecycle function, of the tally wins reaches 5,
   // have a window.confirm message come up telling the user to 'Stop Gambling!'.
   // on 5 wins the spin button should also become disabled.
@@ -115,11 +129,14 @@ const MainSlotMachine = () => {
   useEffect(() => {
     if (tally.wins === 5) {
       let confirm = window.confirm("Stop Gambling!");
-      if (confirm) dispatch(resetTally());
+      if (confirm) {
+        dispatch(resetTally());
+        setColors(["grey", "grey", "grey"])
+      };
     }
   }, [tally.wins]);
 
-  // TASK
+  // TASK--COMPLETE
   // Within the Slots div, create 3 slots. (Create a styled component called 'Slot'
   // and render it out 3 times). Their background colors should be those stored
   // in the newColors array. (Use inline styling)
@@ -127,9 +144,13 @@ const MainSlotMachine = () => {
   return (
     <Parent>
       <SubDiv>
-        <Slots></Slots>
+        <Slots>
+          {newColors.map(slot => (
+            <Slot style={{"backgroundColor": slot}} />
+          ))}
+        </Slots>
 
-        <Spin>Spin!</Spin>
+        <Spin onClick={e => spin()}>Spin!</Spin>
       </SubDiv>
       <SubDiv>
         <Header>Tally</Header>
